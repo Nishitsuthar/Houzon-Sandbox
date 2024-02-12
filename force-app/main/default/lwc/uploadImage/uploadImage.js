@@ -102,7 +102,7 @@ export default class UploadImage extends LightningElement {
               console.error("check your error --> ", { e });
             } else {
               let bucketName = this.confData.S3_Bucket_Name__c;
-              this.fileURL = `https://${bucketName}.s3.amazonaws.com/${this.fileName}`;
+              this.fileURL = `https://${bucketName}.s3.amazonaws.com/${objKey}`;
               this.showSpinner = false;
               console.log("Success");
               this.listS3Objects();
