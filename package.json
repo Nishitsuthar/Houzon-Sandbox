@@ -34,14 +34,5 @@
     "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
       "prettier --write"
     ]
-  },
-  "eslintConfig": {
-    "rules": {
-      "eqeqeq": "off",
-      "no-console": "off",
-      "no-redeclare": "off",
-      "default-case": "off",
-      "no-unused-vars": "off"
-    }
   }
 }

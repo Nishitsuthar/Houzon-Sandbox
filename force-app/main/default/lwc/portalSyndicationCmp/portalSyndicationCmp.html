@@ -1,0 +1,15 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <lightning-card title="Portal Syndication" style="padding: 15px">
+    <div style="height: 300px; padding: 0 15px">
+      <c-my-custom-type-datatable
+        key-field="id"
+        hide-checkbox-column="true"
+        data={data}
+        resize-column-disabled="true"
+        columns={columns}
+      >
+      </c-my-custom-type-datatable>
+    </div>
+  </lightning-card>
+</template>
