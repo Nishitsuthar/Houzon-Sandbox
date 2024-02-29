@@ -7,7 +7,7 @@ export default class MyCustomTypeDatatable extends LightningDatatable {
     customName: {
       template: customNameTemplate,
       standardCellLayout: true,
-      typeAttributes: ["status"]
+      typeAttributes: ["status", "class"]
     }
   };
 }
