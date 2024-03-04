@@ -1,10 +1,6 @@
-.my-brand {
-  --slds-c-badge-color-background: #747474;
-}
-.standard-brand {
-  --slds-c-button-brand-color-background: rgb(44, 75, 196);
-}
-
-lightning-button.button {
-  --slds-c-button-brand-color-background: rgb(18, 188, 154);
+.exampleHolder {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 80px;
 }

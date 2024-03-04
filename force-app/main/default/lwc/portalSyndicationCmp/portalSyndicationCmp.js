@@ -1,5 +1,7 @@
-import { LightningElement, track } from "lwc";
-import portalSyndicationData from "./portalSyndicationData";
+import { LightningElement, track, api } from "lwc";
+// import portalSyndicationData from "./portalSyndicationData";
+import fetchPortals from "@salesforce/apex/PortalSyndicationController.fetchPortals";
+import createPortalListingRecord from "@salesforce/apex/PortalSyndicationController.createPortalListingRecord";
 import { loadStyle } from "lightning/platformResourceLoader";
 import overrideCSS from "@salesforce/resourceUrl/overrideCSS";
 
@@ -26,13 +28,20 @@ const columns = [
 
 export default class PortalSyndicationCmp extends LightningElement {
   hasLoadedStyle = false;
+  @api recordId;
+  @track portalId;
   data = [];
-  flag = false;
+  showSpinner = true;
   columns = columns;
 
-  connectedCallback() {
-    const data = portalSyndicationData({ amountOfRecords: 100 });
-    this.data = data;
+  async connectedCallback() {
+    try {
+      const data = await fetchPortals({ listingId: this.recordId });
+      this.data = data;
+      this.showSpinner = this.data.length > 0 ? false : true;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   }
 
   renderedCallback() {
@@ -45,23 +54,31 @@ export default class PortalSyndicationCmp extends LightningElement {
   }
 
   handleRowAction(event) {
-    let rowId = event.detail.row.Id;
-    if (event.detail.action.name === "publish") {
-      this.handleButtonClick(this.data, rowId);
+    try {
+      let rowId = event.detail.row.Id;
+      let actionType = event.detail.row.buttonLabel;
+      if (event.detail.action.name === "publish") {
+        this.handleButtonClick(this.data, rowId, actionType);
+      }
+    } catch (error) {
+      console.error("Error handling row action:", error);
     }
   }
 
-  handleButtonClick(data, rowId) {
+  async handleButtonClick(data, rowId, actionType) {
+    this.showSpinner = true;
     data.forEach((element) => {
       if (rowId === element.Id) {
-        if (this.flag === true) {
-          this.flag = false;
+        if (element.flag === true) {
+          console.log("if block");
+          element.flag = false;
           element.buttonColor = "brand";
           element.buttonLabel = "Publish";
           element.status = "inactive";
           element.badgeColor = "slds-badge";
         } else {
-          this.flag = true;
+          console.log("else block");
+          element.flag = true;
           element.buttonColor = "destructive";
           element.buttonLabel = "Unpublish";
           element.status = "active";
@@ -70,7 +87,16 @@ export default class PortalSyndicationCmp extends LightningElement {
       }
     });
 
+    console.log("rowId", rowId);
+    let response = await createPortalListingRecord({
+      portalId: rowId,
+      listingId: this.recordId,
+      actionType: actionType
+    });
+    console.log("response", response);
     let newList = [...data];
+    console.log("newList", newList);
     this.data = newList;
+    this.showSpinner = false;
   }
 }

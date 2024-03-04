@@ -11,6 +11,14 @@
         onrowaction={handleRowAction}
       >
       </c-my-custom-type-datatable>
+      <div if:true={showSpinner}>
+        <lightning-spinner
+          variant="brand"
+          alternative-text="Loading Portals"
+          size="medium"
+        >
+        </lightning-spinner>
+      </div>
     </div>
   </lightning-card>
 </template>
