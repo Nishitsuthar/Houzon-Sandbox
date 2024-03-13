@@ -36,11 +36,11 @@ export default class PortalSyndicationCmp extends LightningElement {
 
   async connectedCallback() {
     try {
-      const data = await fetchPortals({ listingId: this.recordId });
-      this.data = data;
-      this.showSpinner = this.data.length > 0 ? false : true;
+        const data = await fetchPortals({ listingId: this.recordId });
+        this.data = data;
+        this.showSpinner = this.data.length > 0 ? false : true;
     } catch (error) {
-      console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
     }
   }
 
@@ -61,7 +61,7 @@ export default class PortalSyndicationCmp extends LightningElement {
         this.handleButtonClick(this.data, rowId, actionType);
       }
     } catch (error) {
-      console.error("Error handling row action:", error);
+      console.error('Error handling row action:', error);
     }
   }
 
@@ -70,14 +70,14 @@ export default class PortalSyndicationCmp extends LightningElement {
     data.forEach((element) => {
       if (rowId === element.Id) {
         if (element.flag === true) {
-          console.log("if block");
+          console.log('if block');
           element.flag = false;
           element.buttonColor = "brand";
           element.buttonLabel = "Publish";
           element.status = "inactive";
           element.badgeColor = "slds-badge";
         } else {
-          console.log("else block");
+          console.log('else block');
           element.flag = true;
           element.buttonColor = "destructive";
           element.buttonLabel = "Unpublish";
@@ -88,14 +88,10 @@ export default class PortalSyndicationCmp extends LightningElement {
     });
 
     console.log("rowId", rowId);
-    let response = await createPortalListingRecord({
-      portalId: rowId,
-      listingId: this.recordId,
-      actionType: actionType
-    });
+    let response = await createPortalListingRecord({ portalId: rowId, listingId: this.recordId, actionType: actionType });
     console.log("response", response);
     let newList = [...data];
-    console.log("newList", newList);
+    console.log('newList', newList);
     this.data = newList;
     this.showSpinner = false;
   }
